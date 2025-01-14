@@ -1,6 +1,5 @@
 import tkinter as tk
 
-
 def bresenham_dotted_line(x0, y0, x1, y1, visible, invisible, canvas):
     dx = abs(x1 - x0)
     dy = abs(y1 - y0)
@@ -14,10 +13,10 @@ def bresenham_dotted_line(x0, y0, x1, y1, visible, invisible, canvas):
     while True:
         if is_visible:
             canvas.create_oval(x0 - 1, y0 - 1, x0 + 1, y0 + 1, fill="black")
-
+        
         if x0 == x1 and y0 == y1:
             break
-
+        
         e2 = 2 * err
         if e2 > -dy:
             err -= dy
@@ -25,7 +24,7 @@ def bresenham_dotted_line(x0, y0, x1, y1, visible, invisible, canvas):
         if e2 < dx:
             err += dx
             y0 += sy
-
+        
         count += 1
         if is_visible and count >= visible:
             is_visible = False
@@ -34,18 +33,12 @@ def bresenham_dotted_line(x0, y0, x1, y1, visible, invisible, canvas):
             is_visible = True
             count = 0
 
-
 class BresenhamApp:
     def __init__(self, root):
         self.root = root
-        self.canvas = tk.Canvas(
-            root,
-            width=root.winfo_screenwidth() * 0.95,
-            height=root.winfo_screenheight() * 0.8,
-            bg="grey"
-        )
+        self.canvas = tk.Canvas(root, width=600, height=400, bg="white")
         self.canvas.pack()
-
+        
         self.controls = tk.Frame(root)
         self.controls.pack()
 
@@ -59,14 +52,10 @@ class BresenhamApp:
         self.invisible_entry.grid(row=1, column=1)
         self.invisible_entry.insert(0, "3")
 
-        self.start_button = tk.Button(
-            self.controls, text="Start Drawing", command=self.start_drawing
-        )
+        self.start_button = tk.Button(self.controls, text="Start Drawing", command=self.start_drawing)
         self.start_button.grid(row=2, column=0, columnspan=2)
-
-        self.reset_button = tk.Button(
-            self.controls, text="Reset", command=self.reset_canvas
-        )
+        
+        self.reset_button = tk.Button(self.controls, text="Reset", command=self.reset_canvas)
         self.reset_button.grid(row=3, column=0, columnspan=2)
 
         self.canvas.bind("<Button-1>", self.on_click)
@@ -81,13 +70,9 @@ class BresenhamApp:
             try:
                 visible = int(self.visible_entry.get())
                 invisible = int(self.invisible_entry.get())
-                bresenham_dotted_line(
-                    x0, y0, x1, y1, visible, invisible, self.canvas
-                )
+                bresenham_dotted_line(x0, y0, x1, y1, visible, invisible, self.canvas)
             except ValueError:
-                print(
-                    "Please enter valid numbers for visible and invisible pixels."
-                )
+                print("Please enter valid numbers for visible and invisible pixels.")
             self.start_point = None
 
     def start_drawing(self):
@@ -96,7 +81,6 @@ class BresenhamApp:
 
     def reset_canvas(self):
         self.canvas.delete("all")
-
 
 if __name__ == "__main__":
     root = tk.Tk()
